@@ -1,112 +1,238 @@
-#include "list.h"
+﻿#include "list.h"
 
-Node::Node(DataType d, Node* n) : data(d), next(n)
+typedef int Type;
+
+LIST::LIST() {
+    head = tail = NULL;
+    index = 0;
+}
+//подсчёт элементов в списке+
+void LIST::count()
 {
+    index = 0;
+    if (head) {
+        Node* buf = head;
+        while (buf) {
+            index++;
+            buf = buf->next;
+        }
+    }
 }
 
-Node::Node(const Node& node2)
-{
-	data = node2.data;
+Node* LIST::search_uk(Type elem) {
+    int i = 0;
+    if (head) {
+        Node* buf = head;
+        while (buf) {
+            if (buf->elem == elem)return buf;
+            buf = buf->next;
+            i++;
+        }
+        //cout << "нет такого элемента";
+        throw "No this elemets";
+    }
+
+}
+//поиск элемента по индексу элемента+
+Type LIST::search_in(int in) {
+    int i = 0;
+    if (head) {
+        Node* buf = head;
+        while (buf) {
+            if (i == in) return buf->elem;
+            buf = buf->next;
+            i++;
+        }
+    }
+    //return NULL;//если не нашёл, то возвращает NULL 
+    throw "No this elemets";
 }
 
-bool Node::operator==(const Node& node2) const
-{
-	return (data == node2.data);
+//поиск индекса элемента по элементу+
+int LIST::search_el(Type elem) {
+    int i = 0;
+    if (head) {
+        Node* buf = head;
+        while (buf) {
+            if (buf->elem == elem)return i;
+            i++;
+            buf = buf->next;
+        }
+    }
+    //i = NULL;
+    //return i;//Возвращает NULL если не нашёл, по хорошему возвращать ошибку
+    throw "No this elements";
 }
 
-List::List()
-{
-	head = nullptr;
+//Добавление узла в начало+
+void LIST::addFirst(Type elem) {
+    Node* buf = new Node;
+    buf->elem = elem;
+    if (!head) {
+        buf->next = tail;
+        tail = buf;
+    }
+    else {
+        buf->next = head;
+        head->prev = buf;
+    }
+    head = buf;
+    head->prev = NULL;
+
 }
 
-List::~List()
-{
-	Node* tmp, *tmp1; // ���������-�������
-	tmp = head;
-	tmp1 = tmp;
-	while (tmp1 != nullptr)
-	{
-		tmp1 = tmp->next;
-		delete tmp;
-		tmp = tmp1;
-	}
+//Добавление узла в конец+
+void LIST::addLast(Type elem) {
+    Node* buf = new Node;
+    buf->elem = elem;
+    if (!head) {
+        buf->next = tail;
+        head = buf;
+        buf->prev = NULL;
+    }
+    else {
+        buf->next = tail->next;
+        buf->prev = tail;
+        tail->next = buf;
+    }
+    tail = buf;
+}
+//Добавление нужного элемента после указанного элемента+
+void LIST::addAfter(Node* bufwh1, Type elemin) {
+    //Node* bufwh = new Node;
+    //bufwh = bufwh1;//находит то, где лежит элемент после которого вставить
+
+
+    if ((bufwh1 != head) && (bufwh1 != tail)) {
+        Node* bufin1 = new Node;
+        bufin1->elem = elemin;
+
+        bufin1->next = bufwh1->next;
+        bufin1->prev = bufwh1;
+        //if (bufin1->prev == bufwh1->next->prev) bufwh1->next->prev = bufin1;
+        bufwh1->next = bufin1;
+        bufin1->next->prev = bufin1;
+
+    }
+    else if ((bufwh1 == tail) && (bufwh1 != head)) {
+        Node* bufin2 = new Node;
+        bufin2->elem = elemin;
+        bufin2->next = NULL;
+        bufwh1->next = bufin2;
+        bufin2->prev = bufwh1;
+        tail = bufin2;
+
+        //bufwh->next->prev = bufin;
+    }
+    else if ((bufwh1 != tail) && (bufwh1 == head)) {
+        Node* bufin = new Node;
+        bufin->elem = elemin;
+        bufin->next = bufwh1->next;
+        bufwh1->next = bufin;
+
+        bufin->prev = NULL;
+        //head = bufin;
+        //bufwh->next->prev = bufin;
+    }
+    else cout << "Нет такого элемента";
+}
+//сложить один список с другим +
+void LIST::mergeAfter(Node* bufwh1, const LIST& it) {
+    Node* bufwh = new Node;
+    bufwh = bufwh1;
+
+    if (it.head)
+    {
+        Node* buf = new Node;
+        buf = it.head;
+        while (buf)
+        {
+            addAfter(bufwh, buf->elem);
+            buf = buf->next;
+        }
+        //bufwh = bufwh->next;
+    }
+
 }
 
-void List::InsertToHead(const DataType& d)
-{
-	if (isEmpty())
-	{
-		head = new Node(d, nullptr); // ��� ������ � ������������
-	}
-	else
-	{
-		head = new Node(d, head);
-	}
+//Пройти по списку и вывести все элементы+
+void LIST::showList() const {
+    if (head) {
+        Node* buf = head;
+        while (buf) {
+            cout << buf->elem << " ";
+            buf = buf->next;
+        }
+        cout << endl;
+    }
+    else cout << "List is empty " << endl;
 }
 
-void List::InsertToTail(const DataType& d)
-{
-	if (isEmpty())
-	{
-		head = new Node(d, nullptr); // ��� ������ � ������������
-	}
-	else
-	{
-		Node* p = new Node(d, nullptr);
-		Node* tmp; // ���������-�������
-		tmp = head;
-		while (tmp->next != nullptr)
-		{
-			tmp = tmp->next;
-		}
-		// � ����� - tmp - ���������
-		tmp->next = p;
-	}
+//Удаление головы+
+void LIST::delHead() {
+    if (head) {
+        Node* buf = head;
+        head = head->next;
+        head->prev = NULL;
+        delete buf;
+    }
+    else cout << "List is empty" << endl;
 }
 
-void List::Clean()
-{
-	Node* tmp;
-	if (isEmpty())
-		return;
+//Удаление хвоста+
+void LIST::delTail() {
+    if (tail) {
+        Node* buf = tail;
+        tail = tail->prev;
+        tail->next = NULL;
+        delete buf;
+    }
+    else cout << "List is empty" << endl;
+}
+void LIST::delElem(Type elemwh) {
+    Node* bufwh = new Node;
+    bufwh = search_uk(elemwh);
+    if ((bufwh == head) && (bufwh != tail)) {
+        Node* buf = head;
+        head = head->next;
+        head->prev = NULL;
+        delete buf;
+    }
 
-	while (head->next != nullptr)
-	{
-		tmp = head->next;
-		head->next = tmp->next; // head->next->next;
-		delete tmp;
-	}
-	delete head;
-	head = nullptr;
+    if ((bufwh != head) && (bufwh == tail)) {
+        Node* buf = tail;
+        tail = tail->prev;
+        tail->next = NULL;
+        delete buf;
+    }
+
+    if ((bufwh != head) && (bufwh != tail))
+    {
+        Node* bufprev = bufwh->prev;
+        Node* bufnext = bufwh->next;
+        bufprev->next = bufnext;
+        bufnext->prev = bufprev;
+
+    }
+    delete bufwh;
+}
+//Обмен данных списка+
+void LIST::swap(int& a, int& b) {
+    int buf = a;
+    a = b;
+    b = buf;
 }
 
-void List::Delete(const DataType& d)
-{
-	// ����� ��������
-	// ����� ����, ��� ����� ���
-	Node* prev = head;
-	Node* tmp;
-	bool find = false;
+//Сортировка+
+void LIST::sortingList() {
+    Node* buf = head;
+    for (Node* i = buf; i; i = i->next) {
+        for (Node* j = i->next; j; j = j->next) {
+            if (i->elem < j->elem) {
+                swap(i->elem, j->elem);
+            }
+        }
+    }
 
-	// ������ � ������
-	if (head->data == d)
-	{
-		head = head->next;
-		delete prev; // ������ ��� ������
-		find = true;
-	}
-
-	while (!find && (prev->next != nullptr))
-	{
-		if (prev->next->data == d)
-		{
-			// prev->next - ��� �����
-			tmp = prev->next;
-			prev->next = prev->next->next; // tmp->next
-			delete tmp;
-			find = true;
-		}
-		else
-			prev = prev->next;
-	}
 }
+//проверка на уникальность--находится в разработке
