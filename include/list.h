@@ -18,21 +18,23 @@ class LIST {
 public:
     int index;
     LIST();
-    void addFirst(Type elem);//+
-    void addLast(Type elem);//+
-    void addAfter(Node* bufwh1, Type elemin);//+
-    void mergeAfter(Node* bufwh1, const LIST& it);//+
-    void delTail();//+ -with throw
-    void delHead();//+ -with throw
-    void delElem(Type elemwh);//+ -with throw
+    void addFirst(Type elem);
+    void addLast(Type elem);
+    void addAfter(Node* bufwh1, Type elemin);
+    void mergeAfter(Node* bufwh1, const LIST& it);
+    void delTail();
+    void delHead();
+    void delElem(Type elemwh);
     void sortingList();
-    void count();//+ with throw
-    int search_el(Type elem);//+ with throw
-    Type search_in(int in);//+ with throw
-    Node* search_uk(Type elem);//+ with throw
+    void count();
+    void unique();
+    int search_el(Type elem);
+    Type search_in(int in);
+    Node* search_uk(Type elem);
     void swap(int& a, int& b);
     void showList() const;
-
+    void inverse();
+    bool equal(LIST& it1);
 };
 
 #endif

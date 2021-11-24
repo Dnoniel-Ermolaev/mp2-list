@@ -102,8 +102,8 @@ void LIST::addAfter(Node* bufwh1, Type elemin) {
     //Node* bufwh = new Node;
     //bufwh = bufwh1;//находит то, где лежит элемент после которого вставить
 
-
-    if ((bufwh1 != head) && (bufwh1 != tail)) {
+    if ((bufwh1 != tail) || (bufwh1 == head))
+    {
         Node* bufin1 = new Node;
         bufin1->elem = elemin;
 
@@ -124,7 +124,7 @@ void LIST::addAfter(Node* bufwh1, Type elemin) {
 
         //bufwh->next->prev = bufin;
     }
-    else if ((bufwh1 != tail) && (bufwh1 == head)) {
+    /*else if ((bufwh1 != tail) && (bufwh1 == head)) {
         Node* bufin = new Node;
         bufin->elem = elemin;
         bufin->next = bufwh1->next;
@@ -133,7 +133,7 @@ void LIST::addAfter(Node* bufwh1, Type elemin) {
         bufin->prev = NULL;
         //head = bufin;
         //bufwh->next->prev = bufin;
-    }
+    }*/
     else cout << "Нет такого элемента";
 }
 //сложить один список с другим +
@@ -236,3 +236,97 @@ void LIST::sortingList() {
 
 }
 //проверка на уникальность--находится в разработке
+void LIST::unique() {
+    Node* tmp = head->next;
+    Node* prev = head;
+    while (tmp != nullptr) {
+        Node* tmp2 = head;
+        bool find = false;
+        prev = tmp->prev;
+        while ((tmp2 != tmp) && (!find)) {
+            if (tmp2->elem == tmp->elem) find = true;
+            else {
+                tmp2 = tmp2->next;
+
+            }
+            if (find) {
+
+                Node* bufwh = new Node;
+                bufwh = tmp2;
+                if ((bufwh == head) && (bufwh != tail))
+                {
+                    Node* buf = head;
+                    head = head->next;
+                    head->prev = NULL;
+                    delete buf;
+                }
+                else {
+                    if ((bufwh != head) && (bufwh == tail)) {
+                        Node* buf = tail;
+                        tail = tail->prev;
+                        tail->next = NULL;
+                        delete buf;
+                        //prev = tmp->prev;
+                    }
+                    else {
+                        if ((bufwh != head) && (bufwh != tail))
+                        {
+                            Node* bufprev = bufwh->prev;
+                            Node* bufnext = bufwh->next;
+                            bufprev->next = bufnext;
+                            bufnext->prev = bufprev;
+                            delete bufwh;
+                            // prev = tmp->prev;
+                        }
+                    }
+                }
+                /*if ((bufwh != head) && (bufwh != tail))
+                {
+                    Node* bufprev = bufwh->prev;
+                    Node* bufnext = bufwh->next;
+                    bufprev->next = bufnext;
+                    bufnext->prev = bufprev;
+
+                }*/
+                // delete bufwh;
+                 //delElem(tmp2->elem);
+                // prev = tmp->prev;
+                // find = false;
+            }
+          
+        }
+        tmp = tmp->next;
+
+        prev = prev->next;
+    }
+
+}
+
+void LIST::inverse() {
+    count();
+    int i = index - 1;
+    int k;
+    for (k = 0; k < index / 2 + 1; k++) {
+        swap(search_uk(search_in(k))->elem, search_uk(search_in(i))->elem);
+        i--;
+
+    }
+}
+
+bool LIST::equal(LIST& it1) {
+    it1.count();
+    count();
+    if (it1.index != index) return 0;
+    else {
+        if (head) {
+            Node* buf = head;
+            Node* buf2 = it1.head;
+            while (buf) {
+                if (buf->elem != buf2->elem)return 0;
+                buf = buf->next;
+                buf2 = buf2->next;
+            }
+        }
+    }
+    return 1;
+}

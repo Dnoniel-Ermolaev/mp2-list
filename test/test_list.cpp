@@ -3,87 +3,7 @@
 #include <iostream>
 
 
-TEST(LIST, test) {//просто main, не несущий важности проверки
-        setlocale(LC_ALL, "RUS");
 
-
-        LIST mylist;
-        int a_i;
-        cout << "Enter elements" << endl;
-        int j = 1;
-        while (j < 10) {
-                mylist.addFirst(j);
-                j++;
-        }
-        mylist.count();
-        mylist.addFirst(1000);
-        cout << "1000 This is:";
-        cout << mylist.search_el(1000) << endl;
-        //mylist.sortingList();
-        
-        cout << mylist.index << endl;
-        cout << "Элемент 5 находится по индексу:";
-        cout << mylist.search_el(5) << endl;
-        cout << "Элемент по номеру 3 это:";
-        cout << mylist.search_in(3) << endl;
-        cout << "Найти элемент 5 и вернуть указатель:";
-        cout << mylist.search_uk(5)->elem << endl;
-
-        mylist.addAfter(mylist.search_uk(1), 55);
-        mylist.showList();
-        mylist.addAfter(mylist.search_uk(55), 57);
-        mylist.showList();
-        mylist.addAfter(mylist.search_uk(55), 58);
-        mylist.showList();
-        mylist.addAfter(mylist.search_uk(58), 59);
-        mylist.showList();
-        mylist.addAfter(mylist.search_uk(59), 60);
-        mylist.showList();
-
-
-        mylist.delTail();
-        mylist.showList();
-
-        mylist.delTail();
-        mylist.showList();
-
-        mylist.delTail();
-        mylist.showList();
-
-        mylist.delTail();
-        mylist.showList();
-
-        //mylist.delHead();
-        mylist.addAfter(mylist.search_uk(9), 55);
-        mylist.addAfter(mylist.search_uk(9), 55);
-
-
-        LIST mylist2;
-        int i = 100;
-        while (i < 500) {
-            mylist2.addFirst(i);
-            i = i + 100;
-        }
-
-        mylist.mergeAfter(mylist.search_uk(9), mylist2);
-        cout << "list после суммы с другим list : " << endl;
-        mylist.delElem(4);
-        mylist.delElem(6);
-        mylist.delElem(7);
-
-        mylist.showList();
-        mylist.count();
-
-        mylist.showList();
-        //_______________________
-
-
-
-
-
-        cout << "Hello World!" << endl;
-        
-    }
 TEST(LIST,test_crate_list) {
     LIST a;
     ASSERT_NO_THROW();
@@ -296,4 +216,258 @@ TEST(LIST, test_Merge) {
    ASSERT_EQ(1, a.search_in(5));
 
 
+}
+TEST(LIST, test_equal_1) {
+    LIST mylist3;
+
+    mylist3.addFirst(1);
+    mylist3.addFirst(2);
+    mylist3.addFirst(3);
+    mylist3.addFirst(4);
+    mylist3.addFirst(5);
+    
+    
+    LIST mylist4;
+    mylist4.addFirst(1);
+    mylist4.addFirst(2);
+    mylist4.addFirst(3);
+    mylist4.addFirst(4);
+    mylist4.addFirst(5);
+    ASSERT_EQ(1, mylist4.equal(mylist3));
+
+
+}
+TEST(LIST, test_equal_2_check_large) {
+    LIST mylist3;
+
+    mylist3.addFirst(1);
+    mylist3.addFirst(2);
+    mylist3.addFirst(3);
+    mylist3.addFirst(4);
+    mylist3.addFirst(5);
+
+
+    LIST mylist4;
+    mylist4.addFirst(1);
+    mylist4.addFirst(2);
+    mylist4.addFirst(3);
+    mylist4.addFirst(4);
+    ASSERT_EQ(0, mylist4.equal(mylist3));
+
+
+}
+TEST(LIST, test_equal_3_after_operations) {
+    LIST mylist3;
+
+    mylist3.addFirst(1);
+    mylist3.addFirst(2);
+    mylist3.addFirst(3);
+    mylist3.addFirst(4);
+    mylist3.addFirst(5);
+
+
+    LIST mylist4;
+    mylist4.addFirst(6);
+    mylist4.addFirst(7);
+    mylist4.addFirst(8);
+    mylist3.mergeAfter(mylist3.search_uk(5),mylist4);
+    
+    LIST mylist5;
+
+    mylist5.addFirst(1);
+    mylist5.addFirst(2);
+    mylist5.addFirst(3);
+    mylist5.addFirst(4);
+    mylist5.addFirst(8);
+    mylist5.addFirst(7);
+    mylist5.addFirst(6);
+    mylist5.addFirst(5);
+
+    ASSERT_EQ(1, mylist5.equal(mylist3));
+
+
+}
+
+TEST(LIST, test_unique_1) {
+    LIST mylist3;
+
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.unique();
+    LIST mylist4;
+    mylist4.addFirst(4);
+    ASSERT_EQ(1, mylist4.equal(mylist3));
+}
+
+TEST(LIST, test_unique_2) {
+    LIST mylist3;
+
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(3);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.unique();
+    LIST mylist4;
+    mylist4.addFirst(4);
+    mylist4.addFirst(3);
+
+    ASSERT_EQ(1, mylist4.equal(mylist3));
+}
+TEST(LIST, test_unique_3) {
+    LIST mylist3;
+
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(5);
+    mylist3.unique();
+    LIST mylist4;
+    mylist4.addFirst(4);
+    mylist4.addFirst(5);
+
+    ASSERT_EQ(1, mylist4.equal(mylist3));
+}
+TEST(LIST, test_unique_4) {
+    LIST mylist3;
+
+    mylist3.addFirst(5);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(5);
+    mylist3.unique();
+    LIST mylist4;
+    mylist4.addFirst(5);
+    mylist4.addFirst(4);
+
+    ASSERT_EQ(1, mylist4.equal(mylist3));
+}
+TEST(LIST, test_unique_5_after_operations) {
+    LIST mylist3;
+
+    
+    mylist3.addFirst(1);
+    mylist3.addFirst(2);
+    mylist3.addFirst(3);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(3);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(3);
+
+    mylist3.addFirst(5);
+    mylist3.addFirst(6);
+
+    mylist3.addAfter(mylist3.search_uk(5), 57);
+    mylist3.addAfter(mylist3.search_uk(5), 57);
+    mylist3.addAfter(mylist3.search_uk(5), 57);
+    mylist3.unique();
+    //cout << "\ninverse" << endl;
+    //cout<<mylist3.search_in(0);
+    mylist3.inverse();
+   //mylist3.showList();
+
+    LIST mylist4;
+    mylist4.addFirst(6);
+    mylist4.addFirst(5);
+    mylist4.addFirst(57);
+    mylist4.addFirst(4);
+    mylist4.addFirst(3);
+    mylist4.addFirst(2);
+    mylist4.addFirst(1);
+  //  mylist4.showList();
+
+    ASSERT_EQ(1, mylist4.equal(mylist3));
+}
+
+TEST(LIST, test_inverse_1) {
+    LIST mylist3;
+
+
+    mylist3.addFirst(1);
+    mylist3.addFirst(2);
+    mylist3.addFirst(3);
+    mylist3.addFirst(4);
+
+    LIST mylist4;
+    mylist4.addFirst(4);
+    mylist4.addFirst(2);
+    mylist4.addFirst(3);
+    mylist4.addFirst(1);
+
+    mylist3.inverse();
+
+    ASSERT_EQ(1, mylist4.equal(mylist3));
+}
+
+TEST(LIST, test_inverse_2_after_operations) {
+    LIST mylist3;
+
+
+    mylist3.addFirst(1);
+    mylist3.addFirst(2);
+    mylist3.addFirst(3);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(3);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(4);
+    mylist3.addFirst(3);
+
+    mylist3.addFirst(5);
+    mylist3.addFirst(6);
+
+    mylist3.addAfter(mylist3.search_uk(5), 57);
+    mylist3.addAfter(mylist3.search_uk(5), 57);
+    mylist3.addAfter(mylist3.search_uk(5), 57);
+    mylist3.unique();
+    //cout << "\ninverse" << endl;
+    //cout<<mylist3.search_in(0);
+    //mylist3.showList();
+
+    LIST mylist4;
+    mylist4.addFirst(6);
+    mylist4.addFirst(5);
+    mylist4.addFirst(57);
+    mylist4.addFirst(4);
+    mylist4.addFirst(3);
+    mylist4.addFirst(2);
+    mylist4.addFirst(1);
+   // mylist4.showList();
+    mylist4.inverse();
+    ASSERT_EQ(1, mylist4.equal(mylist3));
 }
