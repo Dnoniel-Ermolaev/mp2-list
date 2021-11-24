@@ -3,16 +3,18 @@
 #include <iostream>
 
 
-
-TEST(LIST,test_crate_list) {
+//Тест на создание списка
+TEST(LIST,test_create_list) {
     LIST a;
     ASSERT_NO_THROW();
 }
+//Добавление в начало
 TEST(LIST,test_add_first) {
     LIST a;
     a.addFirst(1);
     ASSERT_NO_THROW();
 }
+//Проверка, что при добавлении в начало, элемент становится равным head
 TEST(LIST,test_add_first_equal_head) {
     LIST a;
     a.addFirst(1);
@@ -20,6 +22,7 @@ TEST(LIST,test_add_first_equal_head) {
     a.addFirst(3);
     ASSERT_EQ(3,a.search_uk(3)->elem);
 }
+//Добавление в конец
 TEST(LIST, test_add_last) {
     LIST a;
     a.addLast(1);
@@ -27,6 +30,7 @@ TEST(LIST, test_add_last) {
     a.addLast(3);
     ASSERT_NO_THROW();
 }
+//Проверка, что при добавлении в конец, элемент становится tail
 TEST(LIST, test_add_last_equal_tail) {
     LIST a;
     a.addLast(1);
@@ -34,6 +38,7 @@ TEST(LIST, test_add_last_equal_tail) {
     a.addLast(3);
     ASSERT_EQ(1, a.search_uk(1)->elem);
 }
+//Добавление после какого-то элемента
 TEST(LIST, test_add_after) {//Здесь приходится проводить два теста для того, чтоб точно удостовериться в верном расположении узла и его значении
     LIST a;
     
@@ -46,6 +51,7 @@ TEST(LIST, test_add_after) {//Здесь приходится проводить
     ASSERT_EQ(1000,a.search_uk(1000)->elem);
     ASSERT_EQ(3, a.search_el(1000));
 }
+//Удаление head
 TEST(LIST, test_del_Head) {
     LIST a;
     
@@ -57,6 +63,7 @@ TEST(LIST, test_del_Head) {
     a.delHead();
     ASSERT_EQ(4, a.search_uk(4)->elem );
 }
+//Удаление tail
 TEST(LIST, test_del_Tail) {
     LIST a;
     
@@ -68,6 +75,7 @@ TEST(LIST, test_del_Tail) {
     a.delTail();
     ASSERT_EQ(2, a.search_uk(2)->elem);
 }
+//Удаление head+tail
 TEST(LIST, test_all_del) {
     LIST a;
     
@@ -82,6 +90,7 @@ TEST(LIST, test_all_del) {
     ASSERT_EQ(4, a.search_uk(4)->elem);
 
 }
+//Повторное удаление head
 TEST(LIST, test_two_del_head) {
     LIST a;
     
@@ -94,6 +103,7 @@ TEST(LIST, test_two_del_head) {
     a.delHead();
     ASSERT_EQ(3, a.search_uk(3)->elem);
 }
+//Повторное удаление tail
 TEST(LIST, test_two_del_tail) {
     LIST a;
     
@@ -106,6 +116,7 @@ TEST(LIST, test_two_del_tail) {
     a.delTail();
     ASSERT_EQ(3, a.search_uk(3)->elem);
 }
+//Удаление конкретного элемента
 TEST(LIST, test_del_elem) {
     LIST a;
     
@@ -118,6 +129,7 @@ TEST(LIST, test_del_elem) {
     a.delElem(3);
     ASSERT_EQ(2, (a.search_uk(5)->next->elem));
 }
+//Поиск по индексу -> вернёт значение
 TEST(LIST, test_search_in) {
     LIST a;
    
@@ -128,6 +140,7 @@ TEST(LIST, test_search_in) {
     a.addFirst(5);
     ASSERT_EQ(2, a.search_in(3));
 }
+//Поиск по индексу с исключением
 TEST(LIST, test_search_in_throw) {
     LIST a;
     
@@ -138,6 +151,7 @@ TEST(LIST, test_search_in_throw) {
     a.addFirst(5);
     ASSERT_ANY_THROW(a.search_in(100));
 }
+//Поиск по значению -> вернёт индекс
 TEST(LIST, test_search_el) {
     LIST a;
    
@@ -148,6 +162,7 @@ TEST(LIST, test_search_el) {
     a.addFirst(5);
     ASSERT_EQ(3, a.search_el(2));
 }
+//Поиск по значению с исключение
 TEST(LIST, test_search_el_throw) {
     LIST a;
     
@@ -158,6 +173,7 @@ TEST(LIST, test_search_el_throw) {
     a.addFirst(5);
     ASSERT_ANY_THROW(a.search_el(100));
 }
+//Поиск по значению -> вернёт указатель
 TEST(LIST, test_search_uk) {
     LIST a;
    
@@ -168,6 +184,7 @@ TEST(LIST, test_search_uk) {
     a.addFirst(5);
     ASSERT_EQ(4, a.search_uk(4)->elem);
 }
+//Поиск по значению с исключением 
 TEST(LIST, test_search_uk_throw) {
     LIST a;
   
@@ -178,6 +195,7 @@ TEST(LIST, test_search_uk_throw) {
     a.addFirst(5);
     ASSERT_ANY_THROW(a.search_uk(100));
 }
+//Подсчёт элеентов в списке
 TEST(LIST,test_count) {
     LIST a;
     
@@ -189,12 +207,14 @@ TEST(LIST,test_count) {
     a.count();
     ASSERT_EQ(5, a.index);
 }
+//Проверка на подсчёт элементов в пустом списке
 TEST(LIST, test_count_without_elements) {
     LIST a;
 
     a.count();
     ASSERT_EQ(0, a.index);
 }
+//Проверка на возможность =+ двух списков
 TEST(LIST, test_Merge) {
     LIST a;
     LIST b;
@@ -217,6 +237,7 @@ TEST(LIST, test_Merge) {
 
 
 }
+//Проверка на сравнение списков
 TEST(LIST, test_equal_1) {
     LIST mylist3;
 
@@ -287,7 +308,7 @@ TEST(LIST, test_equal_3_after_operations) {
 
 
 }
-
+//Проверка на правильную операцию по созданию уникального списка 
 TEST(LIST, test_unique_1) {
     LIST mylist3;
 
@@ -307,7 +328,6 @@ TEST(LIST, test_unique_1) {
     mylist4.addFirst(4);
     ASSERT_EQ(1, mylist4.equal(mylist3));
 }
-
 TEST(LIST, test_unique_2) {
     LIST mylist3;
 
@@ -411,7 +431,7 @@ TEST(LIST, test_unique_5_after_operations) {
 
     ASSERT_EQ(1, mylist4.equal(mylist3));
 }
-
+//Проверка на правильную операцию инверсии списка
 TEST(LIST, test_inverse_1) {
     LIST mylist3;
 
@@ -431,7 +451,6 @@ TEST(LIST, test_inverse_1) {
 
     ASSERT_EQ(1, mylist4.equal(mylist3));
 }
-
 TEST(LIST, test_inverse_2_after_operations) {
     LIST mylist3;
 
