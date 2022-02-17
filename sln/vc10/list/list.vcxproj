@@ -12,9 +12,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\list.h" />
+    <ClInclude Include="..\..\..\include\monom.h" />
+    <ClInclude Include="..\..\..\include\polinom.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\list.cpp" />
+    <ClCompile Include="..\..\..\src\monom.cpp" />
+    <ClCompile Include="..\..\..\src\polinom.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F803D9B4-7FD5-4DD1-BA5F-7612315650E1}</ProjectGuid>
